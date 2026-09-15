@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cessna Citation CJ4 Checklist</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --accent-blue: #2980b9;
+            --accent-blue-hover: #3498db;
+            --accent-red: #c0392b;
+            --accent-red-hover: #e74c3c;
+            --item-hover: #2a2a2a;
+            --checked-color: #7f8c8d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #333;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 15px;
+            background-color: var(--accent-blue);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-blue-hover);
+        }
+
+        button#resetBtn {
+            background-color: #555;
+        }
+        
+        button#resetBtn:hover {
+            background-color: #777;
+        }
+
+        .section-title {
+            margin: 30px 0 10px 0;
+            border-bottom: 2px solid #444;
+            padding-bottom: 5px;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+
+        .category {
+            background-color: var(--container-bg);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .category.emergency {
+            border-color: var(--accent-red);
+        }
+
+        .category-header {
+            padding: 15px;
+            background-color: #2c3e50;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .category.emergency .category-header {
+            background-color: var(--accent-red);
+        }
+
+        .category-header:hover {
+            filter: brightness(1.1);
+        }
+
+        .category-content {
+            display: none;
+            padding: 10px;
+        }
+
+        .category-content.active {
+            display: block;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .check-item:last-child {
+            border-bottom: none;
+        }
+
+        .check-item:hover {
+            background-color: var(--item-hover);
+        }
+
+        .check-item input[type="checkbox"] {
+            margin-top: 5px;
+            margin-right: 15px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .check-text {
+            flex-grow: 1;
+        }
+
+        .check-text strong {
+            color: #fff;
+        }
+
+        .check-item.completed .check-text {
+            color: var(--checked-color);
+            text-decoration: line-through;
+        }
+
+        .check-item.completed .check-text strong {
+            color: var(--checked-color);
+        }
+
+        .arrow {
+            transition: transform 0.3s;
+        }
+        
+        .arrow.open {
+            transform: rotate(180deg);
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .header h1 { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Cessna Citation CJ4 Checklist</h1>
+        <p id="progressText">İlerleme: 0%</p>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="controls">
+        <button id="expandAllBtn">Tümünü Aç/Kapat</button>
+        <button id="resetBtn">Sıfırla</button>
+    </div>
+
+    <div id="checklist-container">
+        <!-- Javascript ile doldurulacak -->
+    </div>
+
+    <script>
+        const checklistData = [
+            {
+                section: "NORMAL OPERASYONLAR",
+                categories: [
+                    {
+                        title: "1. Elektrik ve İlk Enerji",
+                        items: [
+                            "<strong>BATT SW:</strong> ON (Batarya anahtarı açılır)",
+                            "<strong>EMER BATT:</strong> ON / ARM (Acil durum bataryası aktif edilir)",
+                            "<strong>STBY FLT DISPLAY:</strong> ON (Yedek uçuş göstergesi açılır)",
+                            "<strong>EXT PWR:</strong> ON (Avail olduğunda, harici güç bağlanır - Not: CJ4'te APU yoktur)",
+                            "<strong>AVIONICS SW:</strong> ON (Avyonik sistemlere güç verilir)"
+                        ]
+                    },
+                    {
+                        title: "2. FMS ve Ön Hazırlık",
+                        items: [
+                            "<strong>FMS POS INIT:</strong> Mevcut havalimanı ve koordinat doğrulanır.",
+                            "<strong>FPLN:</strong> Rota, kalkış/varış STAR-SID ve kopukluklar girilip kontrol edilir.",
+                            "<strong>PERF INIT:</strong> ZFW, ZFWCG, Block Fuel ve yolcu ağırlıkları girilir.",
+                            "<strong>VNAV SETUP:</strong> Tırmanış ve seyir irtifa kısıtlamaları kontrol edilir.",
+                            "<strong>MCDU PERF:</strong> V-Speeds (V1, Vr, V2) ve Flap konfigürasyonu (Genelde Flap 15) onaylanır."
+                        ]
+                    },
+                    {
+                        title: "3. Kokpit Genel Ayarlar ve Panel",
+                        items: [
+                            "<strong>BAROMETRE:</strong> QNH ayarları yapılır.",
+                            "<strong>FLIGHT DIRECTOR:</strong> ON",
+                            "<strong>ALTIMETER:</strong> Kontrol edilir.",
+                            "<strong>SEAT BELTS:</strong> ON",
+                            "<strong>PASS SAFETY / NO SMOKING:</strong> ON",
+                            "<strong>ANTI-ICE:</strong> Şartlara göre WING / ENG Anti-Ice kontrol edilir.",
+                            "<strong>FUEL BOOST PUMPS:</strong> NORM (Otomatik pozisyonda bırakılır)."
+                        ]
+                    },
+                    {
+                        title: "4. Motor Çalıştırma Öncesi ve Taksi Hazırlığı",
+                        items: [
+                            "<strong>BEACON:</strong> ON (Motor çalıştırma öncesi ikaz)",
+                            "<strong>NAV & LOGO:</strong> ON",
+                            "<strong>PARKING BRAKE:</strong> SET (Park freninin çekili olduğu doğrulanır)",
+                            "<strong>THRUST LEVERS:</strong> CUTOFF (Motor kollarının kapalı konumda olduğu doğrulanır)"
+                        ]
+                    },
+                    {
+                        title: "5. Motor Çalıştırma",
+                        items: [
+                            "<strong>R ENGINE STARTER:</strong> PUSH (Sağ motor başlatıcısına basılır)",
+                            "<strong>R N2 > %12:</strong> R RUN/STOP SW ➔ RUN (N2 dönüşü %12'yi geçtiğinde yakıt akışı açılır)",
+                            "<strong>EGT / N1 KONTROLÜ:</strong> Motor değerleri stabil olana kadar izlenir",
+                            "<strong>L ENGINE STARTER:</strong> PUSH (Sol motor başlatıcısına basılır)",
+                            "<strong>L N2 > %12:</strong> L RUN/STOP SW ➔ RUN",
+                            "<strong>EXT PWR:</strong> OFF (Motorlar stabil çalıştıktan sonra harici güç kapatılır ve çekilir)"
+                        ]
+                    },
+                    {
+                        title: "6. Taksi Hazırlığı",
+                        items: [
+                            "<strong>YAW DAMPER:</strong> ON",
+                            "<strong>FLAPS:</strong> 15 (Kalkış konfigürasyonu için ayarlanır)",
+                            "<strong>T.O CONFIG:</strong> TEST (Kalkış uyarısı test edilir)",
+                            "<strong>PITCH TRIM:</strong> T.O BAND (Trim kalkış yeşil bölgesine ayarlanır)",
+                            "<strong>TAXI LIGHT:</strong> ON",
+                            "<strong>WXR / PWS:</strong> ON (Hava radarı aktif)",
+                            "<strong>TCAS:</strong> TA/RA"
+                        ]
+                    },
+                    {
+                        title: "7. Tırmanış ve Seyir (Climb & Cruise)",
+                        items: [
+                            "<strong>LANDING GEAR:</strong> UP (Pozitif tırmanışta takımlar toplanır)",
+                            "<strong>FLAPS:</strong> UP (V2 + 10 knot hız geçildiğinde flaplar toplanır)",
+                            "<strong>YAW DAMPER:</strong> ON (Otopilot kapalıysa bile tırmanışta açık olmalıdır)",
+                            "<strong>TAXI / RECOG LIGHTS:</strong> OFF",
+                            "<strong>SEAT BELTS:</strong> OFF (Türbülans yoksa 10.000 ft üzerinde)",
+                            "<strong>BAROMETRE (PUSH):</strong> STD (Transition Altitude / Geçiş İrtifası aşıldığında)",
+                            "<strong>ENGINE SYNC:</strong> FAN veya TURB (Motor devirlerini senkronize etmek için)",
+                            "<strong>FMS PROG:</strong> Rota takibi ve yakıt tüketimi kontrol edilir."
+                        ]
+                    },
+                    {
+                        title: "8. Alçalma Hazırlığı (Descent Preparation)",
+                        items: [
+                            "<strong>FMS ARR/APPR:</strong> Varış prosedürü, QNH, Sıcaklık, Rüzgar, Transition Level ve Vref değerleri girilir.",
+                            "<strong>SEAT BELTS:</strong> ON (Alçalmaya başlamadan önce)",
+                            "<strong>ANTI-ICE:</strong> ON (Buzlanma şartları mevcutsa ENG/WING/WINDSHIELD Anti-Ice)",
+                            "<strong>BAROMETRE (PUSH):</strong> QNH (Transition Level / Geçiş Seviyesi altına inildiğinde)",
+                            "<strong>ENGINE SYNC:</strong> OFF (Alçalma ve inişte senkronizasyon kapatılır)"
+                        ]
+                    },
+                    {
+                        title: "9. Yaklaşma ve İniş (Approach & Landing)",
+                        items: [
+                            "<strong>NAV / APPR MODE:</strong> ON (Localizer ve Glideslope hattına oturmak için)",
+                            "<strong>FLAPS:</strong> 15 (Hız yaklaştıkça ilk kademe alınır)",
+                            "<strong>LANDING GEAR:</strong> DOWN (Glideslope yakalandığında veya pist görüldüğünde)",
+                            "<strong>FLAPS:</strong> 35 (Tam iniş konfigürasyonu - Vref hızına göre)",
+                            "<strong>SPEED BRAKES:</strong> RETRACT (İniş öncesi hız frenleri tamamen kapalı olmalıdır)",
+                            "<strong>LANDING / RECOG LIGHTS:</strong> ON (10.000 ft altında)",
+                            "<strong>YAW DAMPER:</strong> OFF (Tekerlek temasına yakın veya kısa finalde kapatılır)"
+                        ]
+                    },
+                    {
+                        title: "10. İniş Sonrası Taksi (After Landing Taxi)",
+                        items: [
+                            "<strong>SPEED BRAKES:</strong> RETRACT",
+                            "<strong>FLAPS:</strong> UP (0 konumuna tamamen toplanır)",
+                            "<strong>LANDING / RECOG LIGHTS:</strong> OFF",
+                            "<strong>TAXI LIGHT:</strong> ON",
+                            "<strong>WXR / PWS:</strong> OFF (Hava radarı kapatılır)",
+                            "<strong>TCAS:</strong> STBY",
+                            "<strong>ANTI-ICE:</strong> OFF (Tüm buz çözücü sistemler kapatılır)",
+                            "<strong>PITOT STATIC HEAT:</strong> OFF"
+                        ]
+                    },
+                    {
+                        title: "11. Park ve Motor Kapatma (Parking & Securing)",
+                        items: [
+                            "<strong>PARKING BRAKE:</strong> ON",
+                            "<strong>L & R RUN/STOP SW:</strong> STOP (Motorlar kapatılır)",
+                            "<strong>SEAT BELTS:</strong> OFF",
+                            "<strong>BEACON:</strong> OFF (Motor pallerinin dönüşü tamamen durduğunda)",
+                            "<strong>TAXI LIGHT:</strong> OFF",
+                            "<strong>EXT PWR:</strong> ON (Mevcutsa bağlanır)",
+                            "<strong>AVIONICS SW:</strong> OFF (Avyonik sistemler kapatılır)",
+                            "<strong>STBY FLT DISPLAY:</strong> OFF",
+                            "<strong>EMER BATT:</strong> OFF",
+                            "<strong>BATT SW:</strong> OFF (Cold & Dark durumu için en son kapatılır)"
+                        ]
+                    }
+                ]
+            },
+            {
+                section: "ACİL DURUM VE ANORMAL PROSEDÜRLER",
+                isEmergency: true,
+                categories: [
+                    {
+                        title: "12. Pas Geçme (Go-Around)",
+                        items: [
+                            "<strong>TO/GA BUTTON:</strong> PRESS (Gaz kolları üzerindeki TO/GA tuşuna basılarak FD pas geçme moduna alınır)",
+                            "<strong>THRUST LEVERS:</strong> TO (Motor kolları Takeoff gücüne itilir)",
+                            "<strong>PITCH:</strong> 10-15° Burun Yukarı (Flight Director komutları takip edilir)",
+                            "<strong>FLAPS:</strong> 15 (İniş flapları bir kademe toplanarak 15 dereceye alınır)",
+                            "<strong>LANDING GEAR:</strong> UP (Pozitif tırmanış görüldüğünde)",
+                            "<strong>AUTOPILOT:</strong> ON",
+                            "<strong>FLAPS:</strong> UP (Vref+20 hız limitine ulaşıldığında)",
+                            "<strong>YAW DAMPER:</strong> ON",
+                            "<strong>FMS:</strong> Yeni yaklaşma rotası aktif edilir."
+                        ]
+                    },
+                    {
+                        title: "13. Motor Arızası / Yangını (Engine Failure / Fire)",
+                        items: [
+                            "<strong>AIRCRAFT CONTROL:</strong> Yön kontrolü sağlanır (Çalışan motora doğru Rudder)",
+                            "<strong>THRUST LEVER (Çalışan Motor):</strong> TO veya MCT",
+                            "<strong>AUTOPILOT:</strong> ON",
+                            "<strong>THRUST LEVER (Arızalı Motor):</strong> IDLE",
+                            "<strong>L veya R ENGINE FIRE PUSH BUTTON:</strong> PUSH (İlgili butona basılır)",
+                            "<strong>BOTTLE 1:</strong> ARMED / PUSH (Yangın tüpü patlatılır)",
+                            "<strong>BOTTLE 2:</strong> PUSH (30 sn içinde sönmediyse ikinci tüp patlatılır)",
+                            "<strong>L veya R RUN/STOP SW (Arızalı Motor):</strong> STOP",
+                            "<strong>LANDING:</strong> En yakın uygun meydana (Nearest Airport) yönelilir."
+                        ]
+                    },
+                    {
+                        title: "14. Kabin Basıncı Kaybı (Emergency Descent)",
+                        items: [
+                            "<strong>OXYGEN MASKS:</strong> DON / 100% (Pilotlar oksijen maskelerini derhal takar)",
+                            "<strong>MIC SWITCH:</strong> OXY MASK",
+                            "<strong>PASS OXYGEN:</strong> OVERRIDE / ON (Yolcu maskeleri manuel olarak düşürülür)",
+                            "<strong>THRUST LEVERS:</strong> IDLE",
+                            "<strong>SPEED BRAKES:</strong> EXTEND (Tam açılır)",
+                            "<strong>PITCH:</strong> DOWN (Mmo/Vmo limitinde alçalmak için uçak burun aşağı verilir)",
+                            "<strong>ATC & TRANSPONDER:</strong> MAYDAY & 7700",
+                            "<strong>İRTİFA:</strong> 10.000 FT veya MEA (Hangisi daha yüksekse)"
+                        ]
+                    },
+                    {
+                        title: "15. Suya İniş (Ditching)",
+                        items: [
+                            "<strong>ATC & CABIN:</strong> MAYDAY / BRACE FOR IMPACT",
+                            "<strong>LANDING GEAR:</strong> UP (Kesinlikle toplanmış halde tutulur)",
+                            "<strong>FLAPS:</strong> 35 (Tam flap açılır)",
+                            "<strong>THRUST LEVERS:</strong> IDLE (Suya temasa az kala rölantiye alınır)",
+                            "<strong>PITCH ATTITUDE:</strong> Burun Yukarı (Kuyruğun suya ilk teması hedeflenir)",
+                            "<strong>L & R RUN/STOP SW:</strong> STOP (Suya çarpmadan hemen önce motorlar kapatılır)",
+                            "<strong>EVACUATION:</strong> INITIATE"
+                        ]
+                    },
+                    {
+                        title: "16. Acil Tahliye (Evacuation)",
+                        items: [
+                            "<strong>PARKING BRAKE:</strong> SET",
+                            "<strong>L & R RUN/STOP SW:</strong> STOP",
+                            "<strong>L & R ENGINE FIRE PUSH BUTTONS:</strong> PUSH (Yakıt ve hidrolik hatları tamamen kesilir)",
+                            "<strong>BOTTLE 1 & BOTTLE 2:</strong> PUSH (Eğer bir yangın durumu varsa tüpler patlatılır)",
+                            "<strong>EVACUATION COMMAND:</strong> EVACUATE, EVACUATE",
+                            "<strong>BATT SW / EMER BATT:</strong> OFF (Kaptan terk etmeden hemen önce bataryaları kapatır)"
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        const container = document.getElementById('checklist-container');
+        let totalItems = 0;
+
+        // HTML Üretimi
+        checklistData.forEach(sectionGroup => {
+            const sectionTitle = document.createElement('h2');
+            sectionTitle.className = 'section-title';
+            sectionTitle.textContent = sectionGroup.section;
+            container.appendChild(sectionTitle);
+
+            sectionGroup.categories.forEach(category => {
+                const catDiv = document.createElement('div');
+                catDiv.className = `category ${sectionGroup.isEmergency ? 'emergency' : ''}`;
+
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'category-header';
+                headerDiv.innerHTML = `<span>${category.title}</span><span class="arrow">▼</span>`;
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'category-content';
+
+                category.items.forEach((item, index) => {
+                    totalItems++;
+                    const itemDiv = document.createElement('label');
+                    itemDiv.className = 'check-item';
+                    itemDiv.innerHTML = `
+                        <input type="checkbox" class="checklist-cb">
+                        <div class="check-text">${item}</div>
+                    `;
+                    contentDiv.appendChild(itemDiv);
+                });
+
+                headerDiv.addEventListener('click', () => {
+                    contentDiv.classList.toggle('active');
+                    headerDiv.querySelector('.arrow').classList.toggle('open');
+                });
+
+                catDiv.appendChild(headerDiv);
+                catDiv.appendChild(contentDiv);
+                container.appendChild(catDiv);
+            });
+        });
+
+        // İlerleme ve Checkbox Dinleyicileri
+        const checkboxes = document.querySelectorAll('.checklist-cb');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+
+        function updateProgress() {
+            const checkedCount = document.querySelectorAll('.checklist-cb:checked').length;
+            const percentage = Math.round((checkedCount / totalItems) * 100);
+            
+            progressBar.style.width = percentage + '%';
+            progressText.textContent = `İlerleme: ${percentage}% (${checkedCount}/${totalItems})`;
+
+            checkboxes.forEach(cb => {
+                if(cb.checked) {
+                    cb.closest('.check-item').classList.add('completed');
+                } else {
+                    cb.closest('.check-item').classList.remove('completed');
+                }
+            });
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', updateProgress);
+        });
+
+        // Buton Kontrolleri
+        let isAllExpanded = false;
+        document.getElementById('expandAllBtn').addEventListener('click', () => {
+            isAllExpanded = !isAllExpanded;
+            document.querySelectorAll('.category-content').forEach(content => {
+                if(isAllExpanded) content.classList.add('active');
+                else content.classList.remove('active');
+            });
+            document.querySelectorAll('.arrow').forEach(arrow => {
+                if(isAllExpanded) arrow.classList.add('open');
+                else arrow.classList.remove('open');
+            });
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            if(confirm('Tüm ilerlemeyi sıfırlamak istediğinize emin misiniz?')) {
+                checkboxes.forEach(cb => cb.checked = false);
+                updateProgress();
+            }
+        });
+
+        // İlk Yükleme
+        updateProgress();
+    </script>
+</body>
+</html>
